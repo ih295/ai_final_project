@@ -1,0 +1,96 @@
+GitHub: https://github.com/ih295/ai_final_project
+
+NaiveBayes:
+    For performance, this implementation uses accuracy-based measurements.
+    This implementation is quick, with a test and validation accuracies greater than 70%, sometimes reaching 80%.
+    I will describe what this implementation does in detail by explaining how the functions work.
+
+    For the constructor(__init__):
+        This initializes the NaiveBayes model implementation using both training and validation datasets.
+        It makes sure that both datasets are in numpy form, too.
+        It extracts the features and labels from the training dataset to be used later.
+        It also creates a dictionary containing two lists: spam, and ham.
+        It also calculates the prior probabilities for both spam and ham.
+    
+    For calculate_total_probabilities:
+        Given a class value, this function calculates a prior probability.
+        If the value is 0, it calculates the prior probability for ham (aka not spam).
+        If it is 1, this function calculates the prior probability for spam.
+    
+    For calculate_probabilities:
+        This function calculates the conditional probabilities for all training dataset features,
+        all depending on whether or not the rows in those features contain spam or ham.
+        (That is to say it sets the "spam" in spam ham dictionary to all conditional probabilities involving spam,
+        and does the same for ham. I believe the code makes more sense than this explanation)
+        It goes through every feature and updates the number of spam or ham associated with said feature
+        (So if word_freq_make at index 0 and index 10 are spam, it sets the conditional probability at word_freq_make's position
+        to 2 / total spam).
+        It also calculates the actual probabilities for spam and ham by dividing counts by total instances and multiplies prior probabilities to them.
+    
+    For classify:
+        This function predicts if test features from a test dataset contain spam / ham.
+        It returns 1 if it is spam, 0 if it is ham, by comparing spam and ham probabilities.
+    
+    For evaluate:
+        This function evaluates the performance of this NaiveBayes implementation by using an accuracy-dependent performance measurement.
+        It does this by extracting features and labels from a test dataset.
+        Then it goes through every instance in that dataset, classifying its features and comparing predictions with actual labels (actual spam/ham values).
+        It uses that to identify the accuracy of the model, and returns that accuracy.
+    
+    For performance:
+        This function is sort of legacy, as all it does is call the evaluate function, to return performance measurement.
+
+
+
+LogisticRegression:
+    For performance, this LogisticRegression implementation calculates that by using accuracy (ratio of correct predictions to total predictions)
+    This implementation is quick, and is very accurate, with test and validation accuracies > 70%.
+    I will describe what this implementation does in detail by explaining how the functions work.
+    This implementation uses gradient descent, backed by accuracy-based performance calculations.
+
+    For the constructor (__init__):
+        This initializes the LogisticRegression algorithm with both training and validation datasets.
+        It also defines the learning rate and epochs for model learning.
+        It also gets the features and labels from the training dataset, and adds a column to said features
+    
+    For gradient_descent:
+        This function uses gradient descent for model learning. It relies on accuracy-dependent performance
+        to find the best model to use.
+    
+    For sigmoid:
+        All this does is apply a sigmoid function to a (usually) dot product of two rows from dataset
+    
+    For performance:
+        This function takes in a model and test dataset, and uses accuracy-based performance measurements
+        to measure performance, which is necessary for gradient_descent.
+
+
+KNN Implementation:
+    For performance, this KNN implementation calculates that by using accuracy (ratio of correct predictions to total predictions)
+    This implementation is slow, and (from my own experience) has accuracies < 70%
+    I will describe this implementation by detailing what every function does.
+    In general, all this implementation does is predict if a test dataset contains spam by being trained on a training set.
+    This implementation uses cosin similarity for calculating distance between rows.
+
+    For the constructor (__init__):
+        It initializes the KNN algorithm with training and validation datasets, and nearest neighbor (k)
+        This function prepares the datasets by converting them to numpy arrays.
+    
+    For calculate_similarity:
+        This function calculates similarity between two rows using cosine similarity.
+
+    For get_neighbors:
+        This function gets all neighboring rows around a test row within k rows.
+    
+    For predict:
+        This function predicts if a row in a test dataset contains spam or not (1 for spam, 0 for ham [not spam])
+    
+    For pooled_performance:
+        This function calculates the accuracy for both test and validation datasets. It is ran in a process pool.
+    
+    Finally, for performance:
+        This function runs pooled_performance in a pool of processes (100 processes)
+
+
+For the non-class performance functions in knn.py, lr.py, and naive.py, the performance function simply measures performance
+by calling the performance function in respective classifier instance.
